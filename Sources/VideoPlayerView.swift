@@ -135,7 +135,11 @@ public final class VideoPlayerView: _PlatformBaseView {
         let playerItem = AVPlayerItem(asset: asset)
         let player = AVQueuePlayer(playerItem: playerItem)
         player.isMuted = true
-        player.preventsDisplaySleepDuringVideoPlayback = false
+        if #available(macOS 10.14, *) {
+            player.preventsDisplaySleepDuringVideoPlayback = false
+        } else {
+            // Fallback on earlier versions
+        }
         player.actionAtItemEnd = isLooping ? .none : .pause
         self.player = player
 
